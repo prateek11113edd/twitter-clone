@@ -1,6 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {
+  validateRegisterData,
+  validateLoginData,
+} = require("../utils/validator");
 const { User } = require("../models/user.model");
 
 const router = express.Router();
@@ -8,31 +12,18 @@ const router = express.Router();
 router.post("/register", async (req, res, next) => {
   const { firstname, lastname, username, email, password } = req.body;
 
-  if (!firstname || typeof firstname !== "string") {
-    return res.json({ status: "error", error: "Invalid firstname" });
+  const { errors, valid } = validateRegisterData(req.body);
+
+  if (!valid) {
+    return res.json({ status: "error", errors });
   }
 
-  if (!lastname || typeof lastname !== "string") {
-    return res.json({ status: "error", error: "Invalid lastname" });
-  }
+  const user = await User.findOne({ username });
 
-  if (!username || typeof username !== "string") {
-    return res.json({ status: "error", error: "Invalid username" });
-  }
+  const emailCheck = await User.findOne({ email });
 
-  if (!email || typeof email !== "string") {
-    return res.json({ status: "error", error: "Invalid email" });
-  }
-
-  if (!password || typeof password !== "string") {
-    return res.json({ status: "error", error: "Invalid password" });
-  }
-
-  if (password.length < 5) {
-    return res.json({
-      status: "error",
-      error: "password too small. should be atleast characters",
-    });
+  if (emailCheck) {
+    return res.json({ status: "error", error: "Email already in use" });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -56,8 +47,15 @@ router.post("/register", async (req, res, next) => {
 });
 
 router.get("/login", async (req, res, next) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const { username, password } = req.body;
+
+  const { errors, valid } = validateLoginData(req.body);
+
+  if (!valid) {
+    return res.json({ status: "error", errors });
+  }
+
+  const user = await User.findOne({ username });
 
   if (!user) {
     return res.json({ status: "error", error: "Invalid username/password" });
