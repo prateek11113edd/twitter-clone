@@ -6,6 +6,7 @@ const {
   validateLoginData,
 } = require("../utils/validator");
 const { User } = require("../models/user.model");
+const { generateJwtToken } = require("../utils/generateJwtToken");
 
 const router = express.Router();
 
@@ -62,13 +63,7 @@ router.get("/login", async (req, res, next) => {
   }
 
   if (await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign(
-      {
-        id: user._id,
-        username: user.username,
-      },
-      process.env.SECRET_KEY
-    );
+    const token = generateJwtToken(user);
 
     return res.json({ status: "ok", data: token });
   }
