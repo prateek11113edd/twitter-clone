@@ -1,10 +1,10 @@
 const { Router } = require("express");
-const { Tweet } = require("../models/tweet.model");
-const { checkAuth } = require("../utils/checkAuth");
+const { Tweet } = require("../../models/tweet.model");
+const { checkAuth } = require("../../utils/checkAuth");
 
 const router = Router();
 
-router.post("/tweet", async (req, res) => {
+router.post("/", async (req, res) => {
   const { message } = req.body;
   const user = checkAuth(req);
 
@@ -29,18 +29,18 @@ router.post("/tweet", async (req, res) => {
   }
 });
 
-router.get("/tweet/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const tweet = await Tweet.findById(req.params.id);
 
   return res.json(tweet);
 });
 
-router.get("/tweet", async (req, res) => {
+router.get("/", async (req, res) => {
   const tweets = await Tweet.find();
   return res.json(tweets);
 });
 
-router.put("/tweet/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const user = checkAuth(req);
   const { id } = req.params;
   const { message } = req.body;
@@ -61,7 +61,7 @@ router.put("/tweet/:id", async (req, res) => {
   return res.json(tweet);
 });
 
-router.delete("/tweet/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const user = checkAuth(req);
 
   const { id } = req.params;
@@ -83,7 +83,7 @@ router.delete("/tweet/:id", async (req, res) => {
     .catch((err) => [res.status(400).json("Error: " + err)]);
 });
 
-router.put("/tweet/like/:id", async (req, res) => {
+router.put("/like/:id", async (req, res) => {
   const user = checkAuth(req);
 
   const { id } = req.params;

@@ -1,11 +1,11 @@
 const { Router } = require("express");
-const { Comment } = require("../models/comment.model");
-const { Tweet } = require("../models/tweet.model");
-const { checkAuth } = require("../utils/checkAuth");
+const { Comment } = require("../../models/comment.model");
+const { Tweet } = require("../../models/tweet.model");
+const { checkAuth } = require("../../utils/checkAuth");
 
 const router = Router();
 
-router.post("/comment/:tweetId", async (req, res) => {
+router.post("/:tweetId", async (req, res) => {
   const user = checkAuth(req);
   const { tweetId } = req.params;
 
@@ -32,7 +32,7 @@ router.post("/comment/:tweetId", async (req, res) => {
   return res.json({ status: "ok", data: comment });
 });
 
-router.get("/comment/:tweetId", async (req, res) => {
+router.get("/:tweetId", async (req, res) => {
   const { tweetId } = req.params;
 
   const tweet = await Tweet.findById(tweetId);
@@ -48,7 +48,7 @@ router.get("/comment/:tweetId", async (req, res) => {
 
 // router.get("/comment/:id", (req, res) => {});
 
-router.put("/comment/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const user = checkAuth(req);
   const { id } = req.params;
 
@@ -71,7 +71,7 @@ router.put("/comment/:id", async (req, res) => {
   res.json(comment);
 });
 
-router.delete("/comment/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const user = checkAuth(req);
   const { id } = req.params;
 
@@ -92,6 +92,6 @@ router.delete("/comment/:id", async (req, res) => {
   return res.json("comment deleted");
 });
 
-router.put("/comment/like/:id", (req, res) => {});
+router.put("/like/:id", (req, res) => {});
 
 module.exports = router;

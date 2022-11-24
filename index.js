@@ -10,9 +10,7 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", require("./routes/auth.routes"));
-app.use("/api", require("./routes/tweet.routes"));
-app.use("/api", require("./routes/comment.routes"));
+app.use("/api", require("./routes/index"));
 
 mongoose.connect(process.env.URI, {
   useNewUrlParser: true,
