@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use("/api", require("./routes/auth.routes"));
 app.use("/api", require("./routes/tweet.routes"));
+app.use("/api", require("./routes/comment.routes"));
 
 mongoose.connect(process.env.URI, {
   useNewUrlParser: true,
