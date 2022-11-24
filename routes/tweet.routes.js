@@ -25,19 +25,19 @@ router.post("/tweet", async (req, res) => {
 
     res.json(tweet);
   } catch (error) {
-    throw "Could not save the tweet";
+    res.json("Could not save the tweet");
   }
 });
 
 router.get("/tweet/:id", async (req, res) => {
   const tweet = await Tweet.findById(req.params.id);
 
-  res.json(tweet);
+  return res.json(tweet);
 });
 
 router.get("/tweet", async (req, res) => {
   const tweets = await Tweet.find();
-  res.json(tweets);
+  return res.json(tweets);
 });
 
 router.put("/tweet/:id", async (req, res) => {
