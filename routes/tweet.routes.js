@@ -72,7 +72,7 @@ router.delete("/tweet/:id", async (req, res) => {
     return res.json("Tweet does not exist");
   }
 
-  if (tweet.creator !== user.id) {
+  if (tweet.creator.toString() !== user.id) {
     return res.status(401).json("You are not authorized to delete this tweet.");
   }
 
