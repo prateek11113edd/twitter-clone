@@ -15,6 +15,7 @@ router.post("/", async (req, res) => {
     });
   }
 
+  console.log(user);
   const newTweet = new Tweet({
     message,
     creator: user.id,
@@ -41,10 +42,12 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const user = checkAuth(req);
+  const user = checkAuth(req, res);
   const { id } = req.params;
   const { message } = req.body;
   const tweet = await Tweet.findById(id);
+
+  console.log(id, message, tweet.creator);
 
   if (!tweet) {
     return res.json("Tweet does not exist");
