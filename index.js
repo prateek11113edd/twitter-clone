@@ -16,10 +16,10 @@ mongoose.connect(process.env.URI, {
   useNewUrlParser: true,
 });
 
-mongoose.connection.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
+mongoose.connection.once("open", () => {});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+module.exports = { app };
